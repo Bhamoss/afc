@@ -30,6 +30,14 @@
       force.login(
         function () {
           console.log("Auth succeeded");
+
+          cordova
+            .require("com.salesforce.util.push")
+            .registerPushNotificationHandler(
+              function (message) {},
+              function (error) {}
+            );
+
           showContactsList();
         },
         function (error) {
@@ -73,6 +81,21 @@
   -->
 
     <div id="content">
+      <ul class="table-view">
+        <li class="table-view-cell media">
+          <a class="navigate-right">
+            <div class="media-body">
+              Item 1
+              <p>
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
+                eiusmod tempor incididunt ut labore et dolore. Lorem ipsum dolor
+                sit amet.
+              </p>
+            </div>
+          </a>
+        </li>
+      </ul>
+
       <ul id="contacts" class="table-view content">
         <!-- Placeholder to add contacts list -->
       </ul>
