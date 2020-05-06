@@ -7,7 +7,7 @@
       content="initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"
     />
     <link href="ratchet.css" rel="stylesheet" />
-    <link href="ratchet-theme.css" rel="stylesheet" />
+    <!-- <link href="ratchet-theme.css" rel="stylesheet" /> -->
     <link href="mycss.css" rel="stylesheet" />
     <style>
       body {
@@ -22,23 +22,12 @@
     <script src="mylib.js"></script>
 
     <script>
-      force.init({
-        loginURL: "https://fanplatform-developer-edition.eu29.force.com/login",
-      });
-
       /* Do login */
       force.login(
         function () {
           console.log("Auth succeeded");
 
-          cordova
-            .require("com.salesforce.util.push")
-            .registerPushNotificationHandler(
-              function (message) {},
-              function (error) {}
-            );
-
-          showContactsList();
+          //showContactsList();
         },
         function (error) {
           console.log("Auth failed: " + error);
@@ -80,31 +69,72 @@
     </header>
   -->
 
-    <div id="content">
-      <ul class="table-view">
-        <li class="table-view-cell media">
-          <a class="navigate-right">
-            <div class="media-body">
-              Item 1
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore. Lorem ipsum dolor
-                sit amet.
-              </p>
-            </div>
-          </a>
-        </li>
-      </ul>
+    <nav class="bar bar-tab">
+      <a class="tab-item active" href="#" onclick="home()">
+        <span class="icon icon-home"></span>
+        <span class="tab-label">Home</span>
+      </a>
+      <a class="tab-item" href="#" onclick="pollBuild()">
+        <span class="icon icon-person"></span>
+        <span class="tab-label">Poll</span>
+      </a>
+      <a class="tab-item" href="#" onclick="leaderboard()">
+        <span class="icon icon-star-filled"></span>
+        <span class="tab-label">Leaderboard</span>
+      </a>
+      <a class="tab-item" id="profiel" href="#" onclick="profiel()">
+        <span class="icon icon-gear"></span>
+        <span class="tab-label">Profiel</span>
+      </a>
+    </nav>
 
-      <ul id="contacts" class="table-view content">
-        <!-- Placeholder to add contacts list -->
+    <div id="content" class="content">
+      <p class="content-padded">
+        Thanks for downloading Ratchet. This is an example HTML page that's
+        linked up to compiled Ratchet CSS and JS, has the proper meta tags and
+        the HTML structure. Need some more help before you start filling this
+        with your own content? Check out some Ratchet resources:
+      </p>
+      <div class="card">
+        <ul class="table-view">
+          <li class="table-view-cell">
+            <a class="push-right" href="http://goratchet.com">
+              <strong>Ratchet documentation</strong>
+            </a>
+          </li>
+          <li class="table-view-cell">
+            <a class="push-right" href="https://github.com/twbs/ratchet/">
+              <strong>Ratchet on Github</strong>
+            </a>
+          </li>
+          <li class="table-view-cell">
+            <a
+              class="push-right"
+              href="https://groups.google.com/forum/#!forum/goratchet"
+            >
+              <strong>Ratchet Google group</strong>
+            </a>
+          </li>
+          <li class="table-view-cell">
+            <a class="push-right" href="https://twitter.com/goratchet">
+              <strong>Ratchet on Twitter</strong>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!--
+      <ul id="contacts" class="table-view">
+        
       </ul>
-    </div>
-    <ul id="navi">
+    --></div>
+
+    <!--
+    <ul id="navi" class="content">
       <li><button onclick="home()">Home</button></li>
       <li><button onclick="poll()">Poll</button></li>
       <li><button onclick="leaderboard()">Leaderboard</button></li>
       <li><button onclick="profiel()">Profiel</button></li>
     </ul>
-  </body>
+  --></body>
 </html>
