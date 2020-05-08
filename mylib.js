@@ -7,6 +7,9 @@ function home() {
       el.classList.add("active");
     }
   }
+  document.querySelector("header").innerHTML =
+    '<h1 class="title">RED DEVILS</h1>';
+
   var soql = "SELECT Title, Summary, UrlName FROM Knowledge__kav LIMIT 100";
   force.query(
     soql,
@@ -27,7 +30,7 @@ function home() {
       */
       for (var i = 0; i < records.length; i++) {
         mid +=
-          '<li class="table-view-cell media"><div class="media-body"><a class="navigate-right" onclick="article(' +
+          '<li class="table-view-cell media"><div class="media-body"><a class="navigate-right lel" onclick="article(' +
           "'" +
           records[i].UrlName +
           "'" +
@@ -71,6 +74,8 @@ function article(url) {
       }
 
       document.querySelector("#content").innerHTML = start + mid + end;
+      document.querySelector("header").innerHTML =
+        '<a class="icon icon-left-nav pull-left" onclick="home()"></a><h1 class="title">RED DEVILS</h1>';
     },
     function (error) {
       alert("Failed to fetch article: " + error);
@@ -80,6 +85,8 @@ function article(url) {
 
 function poll() {
   document.querySelector("#content").innerHTML = "";
+  document.querySelector("header").innerHTML =
+    '<h1 class="title">RED DEVILS</h1>';
   els = document.querySelectorAll("nav a");
   for (var i = 0; i < els.length; i++) {
     el = els[i];
@@ -214,6 +221,8 @@ function poll() {
 
 function leaderboard() {
   document.querySelector("#content").innerHTML = "";
+  document.querySelector("header").innerHTML =
+    '<h1 class="title">RED DEVILS</h1>';
   els = document.querySelectorAll("nav a");
   for (var i = 0; i < els.length; i++) {
     el = els[i];
@@ -223,41 +232,82 @@ function leaderboard() {
     }
   }
 
-  var soql = "SELECT Id, Name FROM Contact LIMIT 100";
+  var soql_labels =
+    "SELECT Label, Threshold FROM ReputationLevel WHERE ParentId = '0DB3X000000kBu7WAE'  ORDER BY Threshold ASC NULLS LAST";
+  var soql_reputation_points =
+    "SELECT ReputationPoints, MemberId FROM NetworkMember WHERE NetworkId = '0DB3X000000kBu7WAE' ORDER BY ReputationPoints DESC NULLS LAST";
+  var soql_users = "SELECT Id, CommunityNickname FROM User";
   force.query(
-    soql,
-    function (data) {
-      var records = data.records;
+    soql_labels,
+    function (data_labels) {
+      force.query(
+        soql_reputation_points,
+        function (data_rep) {
+          force.query(
+            soql_users,
+            function (data_user) {
+              var labels = data_labels.records;
+              var reps = data_rep.records;
+              var users = data_user.records;
 
-      var start = '<ul id="contacts" class="table-view content">';
-      var end = "</ul>";
-      var mid = "";
+              var start = '<ul class="table-view">';
+              var end = "</ul>";
+              var mid = "";
 
-      /*
-      records.forEach((entry) => {
-        mid +=
-          '<li class="table-view-cell"><div class="media-body">' +
-          entry.Name +
-          "</div></li>";
-      });
-      */
-      for (var i = 0; i < records.length; i++) {
-        mid +=
-          '<li class="table-view-cell"><div class="media-body">' +
-          records[i].Name +
-          "</div></li>";
-      }
+              for (var i = 0; i < reps.length; i++) {
+                var name = "test user";
+                var points = reps[i].ReputationPoints;
+                var label = "test label";
 
-      document.querySelector("#content").innerHTML = start + mid + end;
+                for (var j = 0; j < users.length; j++) {
+                  if (users[j].Id == reps[i].MemberId) {
+                    name = users[j].CommunityNickname;
+                    break;
+                  }
+                }
+                for (var j = 0; j < labels.length; j++) {
+                  if (labels[j].Threshold > points) {
+                    break;
+                  }
+                  label = labels[j].Label;
+                }
+
+                mid +=
+                  '<li class="table-view-cell">' +
+                  '<span class="badge">' +
+                  points +
+                  "</span>" +
+                  (i + 1) +
+                  " - " +
+                  name +
+                  "<p>" +
+                  label +
+                  "</p>" +
+                  "</li>";
+              }
+
+              document.querySelector("#content").innerHTML = start + mid + end;
+            },
+            function (error) {
+              alert("Failed to fetch users: " + error);
+            }
+          );
+        },
+        function (error) {
+          alert("Failed to fetch reputations: " + error);
+        }
+      );
     },
     function (error) {
-      alert("Failed to fetch contacts: " + error);
+      alert("Failed to fetch labels: " + error);
     }
   );
 }
 
 function pollBuild() {
   //document.querySelector("#content").innerHTML = "";
+  document.querySelector("header").innerHTML =
+    '<h1 class="title">RED DEVILS</h1>';
   els = document.querySelectorAll("nav a");
   for (var i = 0; i < els.length; i++) {
     el = els[i];
@@ -295,9 +345,9 @@ function pollBuild() {
           for (var i = 0; i < records.length; i++) {
             // hiet titel van poll
             mid +=
-              '<div class="card content-padded"><h2>' +
+              '<div class="card poll content-padded"><h2>' +
               records[i].acpoll__Name__c +
-              "</h2>";
+              "</h2><br>";
 
             var vote_id = "";
 
@@ -369,11 +419,11 @@ function pollBuild() {
                 '<label for="' +
                 records[i].acpoll__Answers__r.records[j].Id +
                 '" ' +
-                " >" +
+                " >  &nbsp;  " +
                 records[i].acpoll__Answers__r.records[j].acpoll__Answer__c +
                 " : " +
                 answer_votes +
-                " votes" +
+                " stemmen" +
                 "</label><br>";
             }
             mid += "</div>";
@@ -455,12 +505,9 @@ function radio_checked(q_id, ans_id, vote_id) {
 }
 
 function profiel() {
-  document.querySelector("#content").innerHTML =
-    "profiel<br />profiel<br />profiel<br />profiel<br />profiel<br />profiel<br />";
-
-  //document.querySelectorAll("nav a").classList.remove("active");
-  //document.querySelector("nav a#profiel").classList.add("active");
-  els = document.querySelectorAll("nav a");
+  force.els = document.querySelectorAll("nav a");
+  document.querySelector("header").innerHTML =
+    '<h1 class="title">RED DEVILS</h1>';
   for (var i = 0; i < els.length; i++) {
     el = els[i];
     el.classList.remove("active");
@@ -468,4 +515,113 @@ function profiel() {
       el.classList.add("active");
     }
   }
+
+  var user_id = "0053X00000CAlh6QAD";
+  var soql =
+    "SELECT Name, Username, Email, CommunityNickname FROM User WHERE Id = '" +
+    user_id +
+    "'";
+  force.query(
+    soql,
+    function (data) {
+      var user = data.records[0];
+      var start = '<div class="card"><ul class="table-view">';
+      var mid_start = '<li class="table-view-cell">';
+      var mid_end = "</li>";
+      var mid = "";
+      var end = "</ul></div>";
+
+      mid += mid_start + "Naam" + "<p>" + user.Name + "</p>" + mid_end;
+      mid +=
+        mid_start +
+        "Community naam" +
+        "<p>" +
+        user.CommunityNickname +
+        "</p>" +
+        mid_end;
+      mid += mid_start + "Email" + "<p>" + user.Email + "</p>" + mid_end;
+      mid +=
+        mid_start + "Gebruikersnaam" + "<p>" + user.Username + "</p>" + mid_end;
+
+      var edit_btn =
+        '<button onclick="edit_profile()" class="btn btn-primary btn-block">Profiel aanpassen</button>';
+      var logout_btn =
+        '<button onclick="logout()" class="btn btn-negative btn-block">Log uit</button>';
+      document.querySelector("#content").innerHTML =
+        start + mid + end + edit_btn + logout_btn;
+    },
+    function (error) {
+      alert("Failed to add vote: " + error);
+    }
+  );
+}
+
+function edit_profile() {
+  var user_id = "0053X00000CAlh6QAD";
+  var soql = "SELECT CommunityNickname FROM User WHERE Id = '" + user_id + "'";
+  force.query(
+    soql,
+    function (data) {
+      var user = data.records[0];
+      var start = '<form name="profiel"  action="javascript:void(0);">';
+      var mid = "";
+      var end = "</form>";
+
+      mid +=
+        "<br><h3>" +
+        "Gebruikersnaam" +
+        "</h3>" +
+        '<input name="gn" type="text" placeholder="' +
+        user.CommunityNickname +
+        '">';
+      mid +=
+        '<button class="btn btn-negative btn-block" onclick="annuleer()">Annuleer</button>';
+      mid +=
+        '<button class="btn btn-positive btn-block" onclick="save_edit()">Opslaan</button>';
+      document.querySelector("#content").innerHTML = start + mid + end;
+    },
+    function (error) {
+      alert("Failed to add vote: " + error);
+    }
+  );
+}
+
+function logout() {
+  oauthPlugin = cordova.require("com.salesforce.plugin.oauth");
+  oauthPlugin.logout();
+}
+
+function annuleer() {
+  profiel();
+}
+
+function save_edit() {
+  var user_id = "0053X00000CAlh6QAD";
+  var val = document.forms["profiel"]["gn"].value;
+  if (val != "") {
+    force.update(
+      "User",
+      {
+        Id: user_id,
+        CommunityNickname: val,
+      },
+      function (r) {
+        sleep(500);
+        profiel();
+      },
+      function (error) {
+        alert("Failed to add change name: " + error);
+      }
+    );
+  } else {
+    profiel();
+  }
+}
+
+function sleep(milliseconds) {
+  const date = Date.now();
+  var currentDate = null;
+  do {
+    currentDate = Date.now();
+  } while (currentDate - date < milliseconds);
 }

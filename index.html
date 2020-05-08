@@ -22,12 +22,24 @@
     <script src="mylib.js"></script>
 
     <script>
+      force.init({
+        loginURL: "https://afcforward-dev-ed.my.salesforce.com",
+      });
       /* Do login */
       force.login(
         function () {
           console.log("Auth succeeded");
-
-          //showContactsList();
+          cordova
+            .require("com.salesforce.util.push")
+            .registerPushNotificationHandler(
+              function (message) {
+                home();
+              },
+              function (error) {
+                home();
+              }
+            );
+          home();
         },
         function (error) {
           console.log("Auth failed: " + error);
@@ -69,7 +81,11 @@
     </header>
   -->
 
-    <nav class="bar bar-tab">
+    <header id="top" class="bar bar-nav">
+      <h1 class="title">RED DEVILS</h1>
+    </header>
+
+    <nav id="bot" class="bar bar-tab">
       <a class="tab-item active" href="#" onclick="home()">
         <span class="icon icon-home"></span>
         <span class="tab-label">Home</span>
@@ -89,40 +105,6 @@
     </nav>
 
     <div id="content" class="content">
-      <p class="content-padded">
-        Thanks for downloading Ratchet. This is an example HTML page that's
-        linked up to compiled Ratchet CSS and JS, has the proper meta tags and
-        the HTML structure. Need some more help before you start filling this
-        with your own content? Check out some Ratchet resources:
-      </p>
-      <div class="card">
-        <ul class="table-view">
-          <li class="table-view-cell">
-            <a class="push-right" href="http://goratchet.com">
-              <strong>Ratchet documentation</strong>
-            </a>
-          </li>
-          <li class="table-view-cell">
-            <a class="push-right" href="https://github.com/twbs/ratchet/">
-              <strong>Ratchet on Github</strong>
-            </a>
-          </li>
-          <li class="table-view-cell">
-            <a
-              class="push-right"
-              href="https://groups.google.com/forum/#!forum/goratchet"
-            >
-              <strong>Ratchet Google group</strong>
-            </a>
-          </li>
-          <li class="table-view-cell">
-            <a class="push-right" href="https://twitter.com/goratchet">
-              <strong>Ratchet on Twitter</strong>
-            </a>
-          </li>
-        </ul>
-      </div>
-
       <!--
       <ul id="contacts" class="table-view">
         

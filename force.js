@@ -365,11 +365,6 @@ var force = (function () {
       },
       false
     );
-
-    cordova.require("com.salesforce.util.push").registerPushNotificationHandler(
-      function (message) {},
-      function (error) {}
-    );
   }
 
   function loginWithBrowser(successHandler, errorHandler) {

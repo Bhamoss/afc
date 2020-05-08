@@ -19,3 +19,74 @@ ul#navi li button {
   height: 100%;
   width: 100%;
 }
+
+#top {
+  background-color: firebrick;
+}
+
+.title {
+  font-family: "Times New Roman", Times, serif;
+  color: gainsboro;
+}
+
+.bar-nav ~ .content .table-view {
+  margin-top: -6px;
+}
+
+.lel {
+  color: firebrick;
+}
+
+.lel:active {
+  color: firebrick;
+}
+
+.poll {
+  padding: 20px 0 20px 20px;
+}
+
+input[type="radio"] {
+  margin-bottom: 20px;
+}
+
+.btn-primary,
+.btn-outlined.btn-primary {
+  background-color: grey;
+  border-color: grey;
+  color: gainsboro;
+}
+.btn-outlined.btn-primary.active,
+.btn-outlined.btn-primary:active,
+.btn-primary.active,
+.btn-primary:active {
+  background-color: grey;
+}
+
+.btn-negative {
+  background-color: firebrick;
+}
+
+.btn-positive {
+  background-color: darkgreen;
+  color: gainsboro;
+}
+
+.icon-left-nav {
+  color: gainsboro;
+}
+
+#bot {
+  background-color: grey;
+}
+
+.bar-tab .tab-item.active,
+.bar-tab .tab-item:active {
+  color: firebrick;
+}
+
+.bar-tab .tab-item {
+  color: gainsboro;
+}
+
+#content {
+}
